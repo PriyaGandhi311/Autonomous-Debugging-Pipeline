@@ -1,0 +1,6 @@
+venv/
+__pycache__/
+*.pyc
+benchmark/sessions.json
+.env
+*.docx
