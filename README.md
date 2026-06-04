@@ -93,6 +93,16 @@ Run `python main.py --mode report` after each round to see the improvement delta
 └── check_memories.py            # Utility to inspect stored memories
 ```
 
+## Results
+
+After running the benchmark across multiple rounds, the agent visibly shifts from human-in-loop to autonomous resolution as memory accumulates.
+
+![Session log showing autonomy shift](image.png)
+
+In the early rounds (sessions ~46-65), every bug routes through the human path — the agent has no prior preferences to draw from. After few rounds (sessions ~66+), the agent has internalized enough engineer feedback that it begins resolving bugs autonomously, without any human review step. The transition is gradual: a few bugs still fall back to human when memory similarity is below the threshold, but the majority resolve end-to-end on their own.
+
+This matches the intended design - memory compounds across sessions, and the confidence score climbs as the engineer's preferences become well-represented in the vector store.
+
 ## Design decisions
 
 **`infer=False` in Mem0** - Mem0's default LLM extraction consumed 8000+ tokens per call, exceeding Groq's free-tier rate limit. All `memory.add()` calls use `infer=False` to store memories directly, bypassing Mem0's internal LLM while still initializing it for library compatibility.
